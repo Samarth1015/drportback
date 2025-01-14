@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
+	
 	"gopkg.in/gomail.v2"
 )
 
@@ -17,16 +17,11 @@ import (
 
 func SendData(w http.ResponseWriter, r *http.Request) {
   
-    err := godotenv.Load()
-    if err != nil {
-        fmt.Println("Error loading .env file:", err)
-        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-        return
-    }
+    
 
     
     var data model.Connect
-    err = json.NewDecoder(r.Body).Decode(&data)
+    err:= json.NewDecoder(r.Body).Decode(&data)
     if err != nil {
         http.Error(w, "Invalid request body", http.StatusBadRequest)
         return
