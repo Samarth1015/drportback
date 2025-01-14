@@ -4,40 +4,28 @@ import (
     "back/routes"
     "log"
     "net/http"
+    "github.com/gorilla/handlers"  // Import gorilla handlers package
     "os"
 )
 
-// CORS Middleware
-func corsMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        // Set CORS headers
-        w.Header().Set("Access-Control-Allow-Origin", "*") // Replace "*" with your frontend domain for production
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        
-        // Handle preflight OPTIONS request
-        if r.Method == http.MethodOptions {
-            w.WriteHeader(http.StatusOK)
-            return
-        }
-
-        next.ServeHTTP(w, r)
-    })
-}
-
 func main() {
-    r := routes.Route() // Your router setup
+    route := routes.Route() // Your router setup
 
-    // Wrap router with CORS middleware
-    handler := corsMiddleware(r)
+    // Setup CORS using gorilla handlers
+    corsHandler := handlers.CORS(
+        handlers.AllowedOrigins([]string{"*"}),  // Allows all origins for development
+        handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}), // Allowed HTTP methods
+        handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "X-Requested-With"}), // Allowed headers
+    )
 
+    // Start the server with CORS enabled
     port := os.Getenv("PORT")
     if port == "" {
-        port = "8000" // Default port
+        port = "8080" // Default port
     }
 
     log.Printf("Server starting on port %s...", port)
-    err := http.ListenAndServe("0.0.0.0:"+port, handler)
+    err := http.ListenAndServe(":"+port, corsHandler(route))  // Wrap your route with CORS handler
     if err != nil {
         log.Fatalf("Error starting server: %v", err)
     }
