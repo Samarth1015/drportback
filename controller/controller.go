@@ -43,7 +43,7 @@ func SendData(w http.ResponseWriter, r *http.Request) {
    
     m := gomail.NewMessage()
     m.SetHeader("From", "testdrport@gmail.com") 
-    m.SetHeader("To", "samarth.acharya2005@gmail.com") 
+    m.SetHeader("To", "mlt07@ucbmsh.org") 
     m.SetHeader("Subject", "New User Submission")
     m.SetBody("text/plain", fmt.Sprintf(
         "Name: %s\nEmail: %s\nPhone: %s\nMessage: %s",
