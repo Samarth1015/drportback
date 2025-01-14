@@ -31,7 +31,9 @@ func SendData(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Received Data:", data)
 
    
+    fmt.Println("PASSWORD from environment:", os.Getenv("PASSWORD"))
     pass := os.Getenv("PASSWORD")
+
     if pass == "" {
         fmt.Println("Environment variable PASSWORD is missing")
         http.Error(w, "Internal Server Error", http.StatusInternalServerError)
