@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
+	
 
 	
 	"gopkg.in/gomail.v2"
@@ -31,8 +31,8 @@ func SendData(w http.ResponseWriter, r *http.Request) {
     fmt.Println("Received Data:", data)
 
    
-    fmt.Println("PASSWORD from environment:", os.Getenv("PASSWORD"))
-    pass := os.Getenv("PASSWORD")
+    pass:="lyez fgxz vbol cvue";
+
 
     if pass == "" {
         fmt.Println("Environment variable PASSWORD is missing")
